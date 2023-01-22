@@ -74,7 +74,7 @@ jobs:
           command: |
             cd frontend
             npm install
-            npm audit fix --audit-level=critical
+            npm audit --audit-level=critical
 
   scan-backend:
     docker:
@@ -83,6 +83,11 @@ jobs:
       - checkout
       - restore_cache:
       - run:
+      command: |
+            cd backend
+            npm install
+            npm audit --audit-level=critical
+
   
 workflows:
   default:
