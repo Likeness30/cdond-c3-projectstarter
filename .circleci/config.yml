@@ -307,7 +307,24 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
       - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}          
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
+           
+  deploy-backend:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - awscli
+      - ansible
+      - nodejs
+      - add_ssh_keys:
+          fingerprints: ["47:12:96:c1:ed:df:53:2f:7f:8b:bb:cb:a9:38:be:21"]
+
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          keys: [backend-build]
+                
                         
 
 
@@ -339,7 +356,9 @@ workflows:
       - run-migrations:
           requires: [configure-infrastructure]
       - deploy-frontend:
-          requires: [run-migrations]            
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]                
            
           
 
