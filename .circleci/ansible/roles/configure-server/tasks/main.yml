@@ -22,4 +22,3 @@
     pm2 -v
   register: server_setup
   changed_when: false
-  ami-08fdec01f5df9998f
