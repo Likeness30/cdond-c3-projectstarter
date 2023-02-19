@@ -112,7 +112,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-    test-frontend:
+  test-frontend:
     <<: *defaults
     steps:
       - checkout
