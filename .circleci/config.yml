@@ -180,40 +180,47 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
 
-  configure-infrastructure:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - add_ssh_keys:
-         fingerprints:
-           - "47:12:96:c1:ed:df:53:2f:7f:8b:bb:cb:a9:38:be:21" 
-      # attach workspace
-      - attach_workspace:
-         at: ~/
+  # configure-infrastructure:
+  #   docker:
+  #     - image: python:3.7-alpine3.11
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #         fingerprints: ["47:12:96:c1:ed:df:53:2f:7f:8b:bb:cb:a9:38:be:21"]
 
-      - run:
-          name: Install dependencies
-          command: |
-            # Your code here
-            sudo apt update
-            sudo apt install unzip -y
-            sudo apt install software-properties-common -y
-            sudo add-apt-repository --yes --update ppa:ansible/ansible
-            sudo apt install ansible -y
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           apk add --update ansible
+  #           apk add --update tar
+  #           apk add --update gzip
+  #     - attach_workspace:
+  #         at: ~/
 
-      - run:
-          name: Configure server
-          command: |
-            # Your code here
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt configure-server.yml
-      # Here's where you will add some code to rollback on failure
-      - destroy-environment     
+  #     - run:
+  #         name: configure server
+  #         command: |
+  #           echo NODE_ENV=production > ~/project/backend/.env
+  #           echo VERSION: "1" >> ~/project/backend/.env
+  #           echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ~/project/backend/.env
+  #           echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ~/project/backend/.env
+  #           echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ~/project/backend/.env
+  #           echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> ~/project/backend/.env
+  #           echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR  >> ~/project/backend/.env
+  #           echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ~/project/backend/.env
+  #           echo TYPEORM_PORT=$TYPEORM_PORT >> ~/project/backend/.env
+  #           echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ~/project/backend/.env
+  #           echo TYPEORM_HOST=$TYPEORM_HOST >> ~/project/backend/.env
+  #           cat ~/project/backend/.env
+  #           cd .circleci/ansible
+  #           ansible-playbook -i inventory.txt configure-server.yml
+  #         no_output_timeout: 40m
+
+  #     - persist_to_workspace:
+  #         root: ~/
+  #         paths:
+  #           - project/backend/.env
+     
 
 #   run-migrations:
 #     docker:
@@ -494,8 +501,8 @@ workflows:
           filters:
             branches:
               only: [master]
-      - configure-infrastructure: 
-          requires: [deploy-infrastructure]
+      # - configure-infrastructure: 
+      #     requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
       # - deploy-frontend:
