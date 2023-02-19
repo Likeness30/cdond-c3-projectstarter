@@ -1,7 +1,7 @@
 version: 2.1
 
 #Anchor and alias for the docker image:circleci/node:13.8.0
-
+defaults: &defaults
   docker:
     - image: circleci/node:13.8.0
 
