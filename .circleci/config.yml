@@ -138,29 +138,29 @@ jobs:
             npm install
             npm run test
   
-  # scan-frontend:
-  #   <<: *defaults
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys: [frontend-scan]
-  #     - run:
-  #         command: |
-  #           cd frontend
-  #           npm install
-  #           npm audit fix --audit-level=critical
+  scan-frontend:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-scan]
+      - run:
+          command: |
+            cd frontend
+            npm install
+            npm audit fix --audit-level=critical
   
-  # scan-backend:
-  #   <<: *defaults
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys: [backend-scan]
-  #     - run:
-  #         command: |
-  #           cd backend
-  #           npm install
-  #           npm audit fix --audit-level=critical
+  scan-backend:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-scan]
+      - run:
+          command: |
+            cd backend
+            npm install
+            npm audit fix --audit-level=critical
 
   # deploy-infrastructure:
   #   docker:
@@ -472,10 +472,10 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - scan-backend:
-      #     requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
