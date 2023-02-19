@@ -125,21 +125,21 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
             
-  # scan-frontend:
-  #   executor:
-  #     name: node
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys:
-  #           - frontend-build
-  #     - run:
-  #         name: Check vulnerability
-  #         command: |
-  #           cd frontend
-  #           npm install
-  #           npm audit fix --force
-  #           npm audit --audit-level=critical
+  scan-frontend:
+    executor:
+      name: node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - frontend-build
+      - run:
+          name: Check vulnerability
+          command: |
+            cd frontend
+            npm install
+            npm audit fix --force
+            npm audit --audit-level=critical
 
   # scan-backend:
   #   executor:
@@ -402,10 +402,10 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
       # - scan-backend:
       #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
