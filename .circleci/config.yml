@@ -223,7 +223,7 @@ jobs:
           at: ~/
 
       - run:
-          name: configure server
+          name: configure server.
           command: |
             echo NODE_ENV=production > ~/project/backend/.env
             echo VERSION: "1" >> ~/project/backend/.env
