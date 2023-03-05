@@ -223,7 +223,7 @@ jobs:
           at: ~/
 
       - run:
-          name: configure server.
+          name: configure server
           command: |
             echo NODE_ENV=production > ~/project/backend/.env
             echo VERSION: "1" >> ~/project/backend/.env
@@ -373,7 +373,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Backend smoke test.
+          name: Backend smoke test
           command: |
             BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
@@ -388,7 +388,7 @@ jobs:
               exit 1
             fi
       - run:
-          name: Frontend smoke test.
+          name: Frontend smoke test
           command: |
             URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com
             echo ${URL}
@@ -412,7 +412,7 @@ jobs:
       - awscli
       - nodejs
       - run:
-          name: Save Old Workflow ID to a text file.
+          name: Save Old Workflow ID to a text file
           command: |
             aws cloudformation \
                list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
